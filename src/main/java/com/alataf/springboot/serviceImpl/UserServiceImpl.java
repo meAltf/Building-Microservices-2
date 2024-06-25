@@ -6,6 +6,7 @@ import com.alataf.springboot.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,5 +24,10 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long userId) {
         Optional<User> userById = userRepository.findById(userId);
         return userById.get();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
