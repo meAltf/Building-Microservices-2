@@ -1,5 +1,6 @@
 package com.alataf.springboot.serviceImpl;
 
+import com.alataf.springboot.dto.UserDTO;
 import com.alataf.springboot.entity.User;
 import com.alataf.springboot.repository.UserRepository;
 import com.alataf.springboot.service.UserService;
@@ -16,8 +17,27 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDTO createUser(UserDTO userDTO) {
+
+        //Convert UserDTO to USER JPA Entity
+        User user = new User(
+                userDTO.getId(),
+                userDTO.getFirstName(),
+                userDTO.getLastName(),
+                userDTO.getEmail()
+        );
+
+        User savedUser = userRepository.save(user);
+
+        //Convert USER JPA entity to DTO
+        UserDTO savedUserDTO = new UserDTO(
+                savedUser.getId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail()
+        );
+
+        return savedUserDTO;
     }
 
     @Override

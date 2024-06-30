@@ -1,5 +1,6 @@
 package com.alataf.springboot.controller;
 
+import com.alataf.springboot.dto.UserDTO;
 import com.alataf.springboot.entity.User;
 import com.alataf.springboot.service.UserService;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ public class UserController {
 
     // build create User REST API
     @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+        UserDTO savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
