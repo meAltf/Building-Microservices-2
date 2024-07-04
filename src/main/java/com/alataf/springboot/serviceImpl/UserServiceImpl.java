@@ -2,6 +2,7 @@ package com.alataf.springboot.serviceImpl;
 
 import com.alataf.springboot.dto.UserDTO;
 import com.alataf.springboot.entity.User;
+import com.alataf.springboot.exception.ResourceNotFoundException;
 import com.alataf.springboot.mapper.userMapper;
 import com.alataf.springboot.repository.UserRepository;
 import com.alataf.springboot.service.UserService;
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long userId) {
-        Optional<User> userById = userRepository.findById(userId);
-        User user = userById.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+
         //return userMapper.mapToUserDTO(user);
 
         return modelMapper.map(user, UserDTO.class);
