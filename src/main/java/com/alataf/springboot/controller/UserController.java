@@ -40,11 +40,11 @@ public class UserController {
 
     // build Update user REST API
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId,
-                                           @RequestBody User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody UserDTO user) {
         // if you're going to pass 'id' also in requestBody the no need to 'setId' for user, you can skip..
         user.setId(userId);
-        User updatedUser = userService.updateUser(user);
+        UserDTO updatedUser = userService.updateUser(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
