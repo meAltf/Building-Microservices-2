@@ -6,6 +6,7 @@ import com.alataf.springboot.mapper.userMapper;
 import com.alataf.springboot.repository.UserRepository;
 import com.alataf.springboot.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +19,20 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+    private ModelMapper modelMapper;
+
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
         //Convert UserDTO to USER JPA Entity
-        User user = userMapper.mapToUser(userDTO);
+        //User user = userMapper.mapToUser(userDTO);
+        User user = modelMapper.map(userDTO, User.class);
 
         User savedUser = userRepository.save(user);
 
         //Convert USER JPA entity to DTO
-        UserDTO savedUserDTO = userMapper.mapToUserDTO(savedUser);
+        //UserDTO savedUserDTO = userMapper.mapToUserDTO(savedUser);
+        UserDTO savedUserDTO = modelMapper.map(savedUser, UserDTO.class);
 
         return savedUserDTO;
     }
@@ -36,14 +41,19 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(Long userId) {
         Optional<User> userById = userRepository.findById(userId);
         User user = userById.get();
-        return userMapper.mapToUserDTO(user);
+        //return userMapper.mapToUserDTO(user);
+
+        return modelMapper.map(user, UserDTO.class);
 
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> userList = userRepository.findAll();
-        return userList.stream().map(userMapper::mapToUserDTO)
+//        return userList.stream().map(userMapper::mapToUserDTO)
+//                .collect(Collectors.toList());
+
+        return userList.stream().map((user) -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +64,9 @@ public class UserServiceImpl implements UserService {
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
         User updatedUser = userRepository.save(existingUser);
-        return userMapper.mapToUserDTO(updatedUser);
+       // return userMapper.mapToUserDTO(updatedUser);
+
+        return modelMapper.map(updatedUser, UserDTO.class);
     }
 
     @Override
