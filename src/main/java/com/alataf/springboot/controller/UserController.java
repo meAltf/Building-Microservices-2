@@ -60,24 +60,23 @@ public class UserController {
     }
 
     // create Exception Handler method
-
     /**
      * webrequest.getDescription(true) means it's also include client information along with url
      * @param resourceNotFoundException
      * @param webRequest
      * @return
      */
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
-                                                                        WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDate.now(),
-                resourceNotFoundException.getMessage(),
-                webRequest.getDescription(false),
-                "USER_NOT_FOUND"
-        );
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler(ResourceNotFoundException.class)
+//    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
+//                                                                        WebRequest webRequest) {
+//        ErrorDetails errorDetails = new ErrorDetails(
+//                LocalDate.now(),
+//                resourceNotFoundException.getMessage(),
+//                webRequest.getDescription(false),
+//                "USER_NOT_FOUND"
+//        );
+//
+//        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+//    }
 
 }
