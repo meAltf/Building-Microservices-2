@@ -2,6 +2,7 @@ package com.alataf.springboot.serviceImpl;
 
 import com.alataf.springboot.dto.UserDTO;
 import com.alataf.springboot.entity.User;
+import com.alataf.springboot.exception.EmailAlreadyExistException;
 import com.alataf.springboot.exception.ResourceNotFoundException;
 import com.alataf.springboot.mapper.userMapper;
 import com.alataf.springboot.repository.UserRepository;
@@ -27,6 +28,12 @@ public class UserServiceImpl implements UserService {
 
         //Convert UserDTO to USER JPA Entity
         //User user = userMapper.mapToUser(userDTO);
+
+        Optional<User> optionalUser = userRepository.findByEmail(userDTO.getEmail());
+        if(optionalUser.isPresent()){
+            throw new EmailAlreadyExistException("Email already exist for this user");
+        }
+
         User user = modelMapper.map(userDTO, User.class);
 
         User savedUser = userRepository.save(user);
