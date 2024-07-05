@@ -2,12 +2,16 @@ package com.alataf.springboot.controller;
 
 import com.alataf.springboot.dto.UserDTO;
 import com.alataf.springboot.entity.User;
+import com.alataf.springboot.exception.ErrorDetails;
+import com.alataf.springboot.exception.ResourceNotFoundException;
 import com.alataf.springboot.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -53,6 +57,27 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+    }
+
+    // create Exception Handler method
+
+    /**
+     * webrequest.getDescription(true) means it's also include client information along with url
+     * @param resourceNotFoundException
+     * @param webRequest
+     * @return
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
+                                                                        WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDate.now(),
+                resourceNotFoundException.getMessage(),
+                webRequest.getDescription(false),
+                "USER_NOT_FOUND"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
 }
